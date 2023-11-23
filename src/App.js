@@ -33,8 +33,7 @@ class App {
     const price = new CalcPrice(inputMenuList);
     const beforePrice = price.getBeforePrice();
     Console.print("");
-    Console.print("<할인 전 총주문 금액>");
-    Console.print(beforePrice.toLocaleString() + "원");
+    OutputView.printBeforeDiscount(beforePrice);
     //
     Console.print("");
     const isGift = Event.giftEvent(beforePrice);
@@ -47,6 +46,17 @@ class App {
     const special = Event.specialEvent(inputDate);
 
     OutputView.printEvents(christmas, weekday, weekend, special, isGift);
+    //
+    Console.print("");
+    const totalDiscounted = christmas + weekday + weekend + special + isGift;
+    OutputView.printDiscount(totalDiscounted);
+    //Console.print(totalDiscounted);
+    const afterPrice = beforePrice - totalDiscounted + 25000;
+    Console.print("");
+    OutputView.printAfterDiscount(afterPrice);
+    //
+    Console.print("");
+    OutputView.printEventBadge(totalDiscounted);
   }
 }
 

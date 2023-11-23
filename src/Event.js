@@ -4,15 +4,16 @@ import CalcPrice from "./CalcPrice.js";
 const Event = {
   giftEvent(beforePrice) {
     if (beforePrice >= 120000) {
-      return true;
+      return 25000;
     }
-    return false;
+    return 0;
   },
   christmasEvent(inputDate) {
     if (1 <= inputDate && inputDate <= 25) {
       const discountPrice = 1000 + (inputDate - 1) * 100;
       return discountPrice;
     }
+    return 0;
   },
   weekdayEvent(inputDate, inputMenuList) {
     if (
@@ -23,30 +24,25 @@ const Event = {
       inputDate == 31
     ) {
       const price = new CalcPrice(inputMenuList);
-      const discountPrice = price.getWeekdayDiscount();
-      return discountPrice;
+      return price.getWeekdayDiscount();
     }
+    return 0;
   },
 
   weekendEvent(inputDate, inputMenuList) {
     const weekendDiscountDates = [1, 2, 8, 9, 15, 16, 22, 23, 29, 30];
     if (weekendDiscountDates.includes(Number(inputDate))) {
       const price = new CalcPrice(inputMenuList);
-
       return price.getWeekendDiscount();
     }
+    return 0;
   },
-  //   isSpecialDiscountDay(inputDate) {
-  //     const specialDiscountDates = [3, 10, 17, 24, 25, 31];
-  //     return specialDiscountDates.includes(inputDate);
-  //   },
   specialEvent(inputDate) {
     const specialDiscountDates = [3, 10, 17, 24, 25, 31];
     if (specialDiscountDates.includes(Number(inputDate))) {
-      return true;
+      return 1000;
     }
-
-    return false;
+    return 0;
   },
 };
 
