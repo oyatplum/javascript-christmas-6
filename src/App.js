@@ -23,19 +23,30 @@ class App {
       inputMenuList.push({ name, quantity });
     });
     //Console.print(menu);
-    Console.print(inputMenuList);
-    Console.print("12월 3일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
+    //Console.print(inputMenuList);
+    Console.print(
+      `12월 ${inputDate}일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!`
+    );
     Console.print("");
     OutputView.printMenu(inputMenuList);
-
+    //
     const price = new CalcPrice(inputMenuList);
     const beforePrice = price.getBeforePrice();
     Console.print("");
     Console.print("<할인 전 총주문 금액>");
     Console.print(beforePrice.toLocaleString() + "원");
-
+    //
     Console.print("");
-    Event.giftEvent(beforePrice);
+    const isGift = Event.giftEvent(beforePrice);
+    OutputView.printGiftMenu(isGift);
+    //
+    Console.print("");
+    const christmas = Event.christmasEvent(inputDate);
+    const weekday = Event.weekdayEvent(inputDate, inputMenuList);
+    const weekend = Event.weekendEvent(inputDate, inputMenuList);
+    const special = Event.specialEvent(inputDate);
+
+    OutputView.printEvents(christmas, weekday, weekend, special, isGift);
   }
 }
 

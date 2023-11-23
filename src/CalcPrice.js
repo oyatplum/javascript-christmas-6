@@ -17,6 +17,8 @@ class CalcPrice {
   ];
   #inputMenu = [];
   #beforePrice = 0;
+  #weekdayPrice = 0;
+  #weekendPrice = 0;
 
   constructor(inputMenuList) {
     this.#inputMenu = inputMenuList;
@@ -29,6 +31,26 @@ class CalcPrice {
     }, 0);
     return this.#beforePrice;
     //Console.print(this.#beforePrice);
+  }
+
+  getWeekdayDiscount() {
+    this.#weekdayPrice = this.#inputMenu.reduce((total, menu) => {
+      const item = this.#menuList.find(
+        (i) => i.name === menu.name && i.menu == "dessert"
+      );
+      return item ? total + 2023 * menu.quantity : total;
+    }, 0);
+    return this.#weekdayPrice;
+  }
+
+  getWeekendDiscount() {
+    this.#weekendPrice = this.#inputMenu.reduce((total, menu) => {
+      const item = this.#menuList.find(
+        (i) => i.name === menu.name && i.menu == "main"
+      );
+      return item ? total + 2023 * menu.quantity : total;
+    }, 0);
+    return this.#weekendPrice;
   }
 }
 
