@@ -3,11 +3,11 @@ import { Console } from "@woowacourse/mission-utils";
 const OutputView = {
   printMenu(menu) {
     Console.print("<주문 메뉴>");
-    //Console.print(menu);
     menu.forEach((item) => {
       Console.print(item.name + " " + item.quantity + "개");
     });
   },
+
   printBeforeDiscount(beforePrice) {
     Console.print("<할인 전 총주문 금액>");
     Console.print(beforePrice.toLocaleString() + "원");
@@ -45,7 +45,10 @@ const OutputView = {
   },
   printDiscount(totalDiscounted) {
     Console.print("<총혜택 금액>");
-    Console.print("-" + totalDiscounted.toLocaleString() + "원");
+    if (totalDiscounted) {
+      Console.print("-" + totalDiscounted.toLocaleString() + "원");
+    }
+    Console.print("0원");
   },
   printAfterDiscount(afterPrice) {
     Console.print("<할인 후 예상 결제 금액>");
