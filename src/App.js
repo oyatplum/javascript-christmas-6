@@ -23,6 +23,10 @@ const menuList = [
 class App {
   #inputDate = 0;
   #inputMenuList = [];
+  #christmas = 0;
+  #weekday = 0;
+  #weekend = 0;
+  #special = 0;
 
   async run() {
     Console.print("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
@@ -81,29 +85,40 @@ class App {
     const price = new CalcPrice(menuList, this.#inputMenuList);
     const beforePrice = price.getBeforePrice();
     Console.print("");
-    OutputView.printBeforeDiscount(beforePrice); // 총 주문 금액 10,000원부터 이벤트 적용
+    OutputView.printBeforeDiscount(beforePrice);
     //
     Console.print("");
     const isGift = Event.giftEvent(beforePrice);
     OutputView.printGiftMenu(isGift);
     //
     Console.print("");
-    const christmas = Event.christmasEvent(this.#inputDate);
-    const weekday = Event.weekdayEvent(
-      this.#inputDate,
-      this.#inputMenuList,
-      menuList
+
+    if (InputValidator.validPrice(menuList, this.#inputMenuList)) {
+      this.#christmas = Event.christmasEvent(this.#inputDate);
+      this.#weekday = Event.weekdayEvent(
+        this.#inputDate,
+        this.#inputMenuList,
+        menuList
+      );
+      this.#weekend = Event.weekendEvent(
+        this.#inputDate,
+        this.#inputMenuList,
+        menuList
+      );
+      this.#special = Event.specialEvent(this.#inputDate);
+    }
+
+    OutputView.printEvents(
+      this.#christmas,
+      this.#weekday,
+      this.#weekend,
+      this.#special,
+      isGift
     );
-    const weekend = Event.weekendEvent(
-      this.#inputDate,
-      this.#inputMenuList,
-      menuList
-    );
-    const special = Event.specialEvent(this.#inputDate);
-    OutputView.printEvents(christmas, weekday, weekend, special, isGift);
     //
     Console.print("");
-    const totalDiscounted = christmas + weekday + weekend + special + isGift;
+    const totalDiscounted =
+      this.#christmas + this.#weekday + this.#weekend + this.#special + isGift;
     OutputView.printDiscount(totalDiscounted);
     //
     const afterPrice = beforePrice - totalDiscounted + isGift;

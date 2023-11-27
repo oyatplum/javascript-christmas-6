@@ -47,8 +47,9 @@ const OutputView = {
     Console.print("<총혜택 금액>");
     if (totalDiscounted) {
       Console.print("-" + totalDiscounted.toLocaleString() + "원");
+    } else {
+      Console.print("0원");
     }
-    Console.print("0원");
   },
   printAfterDiscount(afterPrice) {
     Console.print("<할인 후 예상 결제 금액>");

@@ -6,8 +6,9 @@ export const InputValidator = {
     if (date < 1 || 31 < date) return false;
     return true;
   },
+
   validMenu(menuList, inputMenuList) {
-    Console.print(inputMenuList);
+    // Console.print(inputMenuList);
 
     if (inputMenuList.some((item) => item.name === "")) return false;
 
@@ -39,6 +40,16 @@ export const InputValidator = {
       return beverage.menu === "beverage" ? true : false;
     });
     if (allBeverage) return false;
+
+    return true;
+  },
+  validPrice(menuList, inputMenuList) {
+    const totalPrice = inputMenuList.reduce((total, menu) => {
+      const menus = menuList.find((item) => item.name === menu.name);
+
+      return total + Number(menus.price);
+    }, 0);
+    if (totalPrice < 10000) return false;
 
     return true;
   },
