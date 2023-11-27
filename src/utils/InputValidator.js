@@ -1,3 +1,4 @@
+import { menuList } from "./menuList.js";
 import { Console } from "@woowacourse/mission-utils";
 export const InputValidator = {
   validDate(date) {
@@ -7,9 +8,8 @@ export const InputValidator = {
     return true;
   },
 
-  validMenu(menuList, inputMenuList) {
-    // Console.print(inputMenuList);
-
+  validMenu(inputMenuList) {
+    Console.print(inputMenuList);
     if (inputMenuList.some((item) => item.name === "")) return false;
 
     const menus = inputMenuList.every((menu) => {
@@ -43,7 +43,7 @@ export const InputValidator = {
 
     return true;
   },
-  validPrice(menuList, inputMenuList) {
+  validPrice(inputMenuList) {
     const totalPrice = inputMenuList.reduce((total, menu) => {
       const menus = menuList.find((item) => item.name === menu.name);
 

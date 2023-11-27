@@ -5,21 +5,6 @@ import CalcPrice from "./CalcPrice.js";
 import Event from "./Event.js";
 import { InputValidator } from "./utils/InputValidator.js";
 
-const menuList = [
-  { name: "양송이수프", price: 6000, menu: "appetizer" },
-  { name: "타파스", price: 5500, menu: "appetizer" },
-  { name: "시저샐러드", price: 8000, menu: "appetizer" },
-  { name: "티본스테이크", price: 55000, menu: "main" },
-  { name: "바비큐립", price: 54000, menu: "main" },
-  { name: "해산물파스타", price: 35000, menu: "main" },
-  { name: "크리스마스파스타", price: 25000, menu: "main" },
-  { name: "초코케이크", price: 15000, menu: "dessert" },
-  { name: "아이스크림", price: 5000, menu: "dessert" },
-  { name: "제로콜라", price: 3000, menu: "beverage" },
-  { name: "레드와인", price: 60000, menu: "beverage" },
-  { name: "샴페인", price: 25000, menu: "beverage" },
-];
-
 class App {
   #inputDate = 0;
   #inputMenuList = [];
@@ -60,7 +45,7 @@ class App {
         this.#inputMenuList.push({ name, quantity });
       });
 
-      if (!InputValidator.validMenu(menuList, this.#inputMenuList)) {
+      if (!InputValidator.validMenu(this.#inputMenuList)) {
         throw new Error(
           "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요."
         );
@@ -82,7 +67,7 @@ class App {
     Console.print("");
     OutputView.printMenu(this.#inputMenuList);
     //
-    const price = new CalcPrice(menuList, this.#inputMenuList);
+    const price = new CalcPrice(this.#inputMenuList);
     const beforePrice = price.getBeforePrice();
     Console.print("");
     OutputView.printBeforeDiscount(beforePrice);
@@ -93,18 +78,10 @@ class App {
     //
     Console.print("");
 
-    if (InputValidator.validPrice(menuList, this.#inputMenuList)) {
+    if (InputValidator.validPrice(this.#inputMenuList)) {
       this.#christmas = Event.christmasEvent(this.#inputDate);
-      this.#weekday = Event.weekdayEvent(
-        this.#inputDate,
-        this.#inputMenuList,
-        menuList
-      );
-      this.#weekend = Event.weekendEvent(
-        this.#inputDate,
-        this.#inputMenuList,
-        menuList
-      );
+      this.#weekday = Event.weekdayEvent(this.#inputDate, this.#inputMenuList);
+      this.#weekend = Event.weekendEvent(this.#inputDate, this.#inputMenuList);
       this.#special = Event.specialEvent(this.#inputDate);
     }
 
