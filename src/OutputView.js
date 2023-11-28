@@ -7,7 +7,6 @@ const OutputView = {
       Console.print(item.name + " " + item.quantity + "개");
     });
   },
-
   printBeforeDiscount(beforePrice) {
     Console.print("<할인 전 총주문 금액>");
     Console.print(beforePrice.toLocaleString() + "원");

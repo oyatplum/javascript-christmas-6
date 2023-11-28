@@ -27,7 +27,6 @@ const Event = {
     }
     return 0;
   },
-
   weekendEvent(inputDate, inputMenuList) {
     const weekendDiscountDates = [1, 2, 8, 9, 15, 16, 22, 23, 29, 30];
     if (weekendDiscountDates.includes(Number(inputDate))) {

@@ -8,10 +8,13 @@ import { InputValidator } from "./utils/InputValidator.js";
 class App {
   #inputDate = 0;
   #inputMenuList = [];
+  #beforePrice = 0;
   #christmas = 0;
   #weekday = 0;
   #weekend = 0;
   #special = 0;
+  #isGift = false;
+  #totalDiscounted = 0;
 
   async run() {
     Console.print("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
@@ -20,7 +23,6 @@ class App {
 
   async getDate() {
     const input = await InputView.readDate();
-
     try {
       if (!InputValidator.validDate(input)) {
         throw new Error(
@@ -34,24 +36,21 @@ class App {
       await this.getDate();
     }
   }
+
   async getMenu() {
     const input = await InputView.readMenu();
-
     try {
       const menu = input.split(",");
-
       menu.forEach((item) => {
         const [name, quantity] = item.split("-");
         this.#inputMenuList.push({ name, quantity });
       });
-
       if (!InputValidator.validMenu(this.#inputMenuList)) {
         throw new Error(
           "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요."
         );
       }
-
-      this.start();
+      this.printOutView();
     } catch (error) {
       Console.print(error.message);
       this.#inputMenuList = [];
@@ -59,51 +58,68 @@ class App {
     }
   }
 
-  async start() {
+  printOutView() {
     Console.print(
       `12월 ${this.#inputDate}일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!`
     );
-    //
+    this.outputMenu();
+    this.outputBeforePrice();
+    this.outputGiftMenu();
+    this.outputEvents();
+    this.outputDiscount();
+    this.outputAfterDiscount();
+    this.outputEventBadge();
+  }
+
+  outputMenu() {
     Console.print("");
     OutputView.printMenu(this.#inputMenuList);
-    //
+  }
+  outputBeforePrice() {
     const price = new CalcPrice(this.#inputMenuList);
-    const beforePrice = price.getBeforePrice();
+    this.#beforePrice = price.getBeforePrice();
     Console.print("");
-    OutputView.printBeforeDiscount(beforePrice);
-    //
+    OutputView.printBeforeDiscount(this.#beforePrice);
+  }
+  outputGiftMenu() {
     Console.print("");
-    const isGift = Event.giftEvent(beforePrice);
-    OutputView.printGiftMenu(isGift);
-    //
+    this.#isGift = Event.giftEvent(this.#beforePrice);
+    OutputView.printGiftMenu(this.#isGift);
+  }
+  outputEvents() {
     Console.print("");
-
     if (InputValidator.validPrice(this.#inputMenuList)) {
       this.#christmas = Event.christmasEvent(this.#inputDate);
       this.#weekday = Event.weekdayEvent(this.#inputDate, this.#inputMenuList);
       this.#weekend = Event.weekendEvent(this.#inputDate, this.#inputMenuList);
       this.#special = Event.specialEvent(this.#inputDate);
     }
-
     OutputView.printEvents(
       this.#christmas,
       this.#weekday,
       this.#weekend,
       this.#special,
-      isGift
+      this.#isGift
     );
-    //
+  }
+  outputDiscount() {
     Console.print("");
-    const totalDiscounted =
-      this.#christmas + this.#weekday + this.#weekend + this.#special + isGift;
-    OutputView.printDiscount(totalDiscounted);
-    //
-    const afterPrice = beforePrice - totalDiscounted + isGift;
+    this.#totalDiscounted =
+      this.#christmas +
+      this.#weekday +
+      this.#weekend +
+      this.#special +
+      this.#isGift;
+    OutputView.printDiscount(this.#totalDiscounted);
+  }
+  outputAfterDiscount() {
+    const afterPrice = this.#beforePrice - this.#totalDiscounted + this.#isGift;
     Console.print("");
     OutputView.printAfterDiscount(afterPrice);
-    //
+  }
+  outputEventBadge() {
     Console.print("");
-    OutputView.printEventBadge(totalDiscounted);
+    OutputView.printEventBadge(this.#totalDiscounted);
   }
 }
 
